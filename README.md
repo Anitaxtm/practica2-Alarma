@@ -20,7 +20,7 @@ se apagara cuando se esté implementando el ahorro de energía.
 Contiene los siguientes archivos:
 -------------------------------------------
  
-README.MD: este archivo.
+README.md: este archivo.
 
 Alarma_PuertaAbierta.jpg: Foto del circuito activado simulando cuando la puerta está abierta (el imán está lejos del ReedSwitch).
 
