@@ -1,0 +1,59 @@
+/*
+ Fecha: 15/03/2018
+
+Autora: Ana Evelia Hernandez Aguirre.
+
+Nombre de la practica 2: Alarma para puertas con ReedSwitch.
+
+Descripcion: Practica que utiliza un ReedSwitch para hacer la simulacion de activacion de una
+alarma para puerta, la cual utiliza tambien un Buzzer y un led los cuales se activan cuando el
+ReedSwitch esta en estado LOW (cuando el iman no esta cerca del ReedSwitch) y es en este momento
+cuando empezara a sonar el Buzzer y a prender y apagar el Led indicando la activacion de la alarma
+(cuando la puerta esta abierta).
+Tambien se le implemento el ahorro de energia SLEEP_MODE_PWR_DOWN el cual ahorrara energia del arduino
+mientras no se produsca una interrupcion. La interrupcion se producira cuando el ReedSwitch este en estado
+LOW y comenzara el funcionamiendo de activacion de la alarma.
+El led 13 del arduino se prendera cuando no se este usando el ahorro de energia, y se apagara cuando se
+este implementando el ahorro de energia.
+*/
+
+#include <avr/sleep.h> //Incluimos la libreria para AVR sleep.
+
+int led1= 13; //  pin del led del arduino que se utilizara para indicar el ahorro de energia
+int led = 12; //  pin del led que se activa al hacer la interrupcion.
+int reedswitch=2; // pin del reedswitch
+int buzzer =8; // pin del buzzer
+int val = 0; // variable para tomar el estado del reedSwitch
+
+void setup() { // se declara el modo de los pin a utilizar
+   set_sleep_mode(SLEEP_MODE_PWR_DOWN); //Establecemos el modo de bajo consumo.
+   attachInterrupt(0,interrupthandler,LOW); //establecemos la interrupcion para poder reactivarlo cuando este en estado LOW.
+   pinMode(led, OUTPUT); // ponemos en modo de salida el led
+   pinMode(reedswitch,INPUT); //ponemos en modo de entrada el reedswitch
+   pinMode(buzzer, OUTPUT); // ponemos en modo de salida el buzzer
+   pinMode(led1, OUTPUT); // ponemos en modo de salida el led1
+}// fin del setup
+
+void interrupthandler(){//funcion que maneja la interrupcion
+   sleep_disable();//desactivamos el modo bajo consumo
+   digitalWrite(led1,!digitalRead(led1));//SI se desactiva el modo bajo consumo se apaga el led1 
+}
+
+void loop() { // metodo que ejecutara las instrucciones necesarias para el funcionamiento de el circuito.
+  val = digitalRead(reedswitch); //lee el valor del estado del reedSwitch.
+  sleep_enable();//inicializamos el modo bajo consumo
+  sleep_mode();// ponemos el modo bajo consumo
+
+  if (val==LOW){ // if que verifica si el reedSwitch esta modo LOW.
+
+    digitalWrite(led,HIGH); //enciende el led 
+    digitalWrite(buzzer,HIGH); //enciende la alarma (buzzer)
+    delay(1000); //se le da un tiempo de 1000
+    digitalWrite(led,LOW); // se apaga el led
+    digitalWrite(buzzer, LOW); // se apaga el buzzer
+    delay(1000); // se da un tiempo de 1000
+  }else{ // si no se cumple la condicion del if
+    digitalWrite(led, LOW); // se apaga el led.
+    digitalWrite(buzzer, LOW); // se apagara la alarma (buzzer)
+  } // fin del else
+}// termina el loop
