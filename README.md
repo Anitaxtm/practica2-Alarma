@@ -42,6 +42,7 @@ Nota
 ------
 
 Es importante que en el código al momento de utilizarlo hacer los cambios necesarios, si es que se necesita, por si no se sigue el armado del circuito que se muestra en el diagrama.
+
 Se necesitara un imán para simular una puerta cerrada y abierta con el ReedSwitch.
 
 
